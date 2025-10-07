@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-DementiaCareApplication<dementia-care>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "lx.project.dementia_care.DementiaCareApplication",
+            "projectName": "dementia-care",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
