@@ -5,9 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * User 엔티티용 JPA 리포지터리
+ * User 엔티티에 대한 CRUD 및 페이징/정렬 기능 제공
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // 필요 시 이메일로 조회 같은 커스텀 메서드 추가 가능
+    // 추가 조회가 필요할 경우 아래 예시처럼 메서드를 선언할 수 있습니다.
+    // Optional<User> findByEmail(String email);
 }

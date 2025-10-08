@@ -3,30 +3,49 @@ package lx.project.dementia_care.controller;
 import lx.project.dementia_care.dto.DailyRecordRequest;
 import lx.project.dementia_care.dto.DailyRecordResponse;
 import lx.project.dementia_care.service.DailyRecordService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
+/**
+ * 일별 기록을 다루는 REST 컨트롤러
+ */
 @RestController
 @RequestMapping("/api/daily-records")
-@RequiredArgsConstructor
 public class DailyRecordController {
 
-    private final DailyRecordService recordService;
+    private final DailyRecordService service;
 
-    // 기록 저장 또는 수정 API
-    @PostMapping
-    public ResponseEntity<DailyRecordResponse> saveRecord(@RequestBody DailyRecordRequest request) {
-        DailyRecordResponse response = recordService.saveOrUpdateRecord(request);
-        return ResponseEntity.ok(response);
+    public DailyRecordController(DailyRecordService service) {
+        this.service = service;
     }
 
-    // 특정 사용자, 날짜 기록 조회
-    @GetMapping("/{userId}/{recordDate}")
-    public ResponseEntity<DailyRecordResponse> getRecord(@PathVariable String userId,
-                                                    @PathVariable String recordDate) {
-        DailyRecordResponse response = recordService.getRecord(userId, recordDate);
-        return ResponseEntity.ok(response);
+    /**
+     * 일별 기록 생성 또는 업데이트
+     * @param req DailyRecordRequest 요청 DTO
+     * @return DailyRecordResponse 응답 DTO
+     */
+    @PostMapping
+    public ResponseEntity<DailyRecordResponse> saveOrUpdate(
+            @RequestBody DailyRecordRequest req) {
+        DailyRecordResponse res = service.saveOrUpdateRecord(req);
+        return ResponseEntity.status(HttpStatus.CREATED).body(res);
+    }
+
+    /**
+     * 특정 사용자와 날짜의 기록 조회
+     * @param userId 사용자 ID
+     * @param date   조회 날짜 (ISO yyyy-MM-dd)
+     * @return DailyRecordResponse 응답 DTO
+     */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<DailyRecordResponse> getByUserAndDate(
+            @PathVariable String userId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        DailyRecordResponse res = service.getRecord(userId, date.toString());
+        return ResponseEntity.ok(res);
     }
 }

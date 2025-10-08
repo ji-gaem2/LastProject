@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * - 특정 기간(시작/종료일) 정보를 저장
  */
 @Entity
-@Table(name = "\"Period\"")  // DB 테이블명이 Period
+@Table(name = "\"Period\"", schema = "public")  // DB 테이블명이 Period
 public class Period {
 
     @Id
