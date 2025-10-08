@@ -1,47 +1,105 @@
 package lx.project.dementia_care.entity;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Map;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+/**
+ * 일별 기록 엔티티 (DailyRecord)
+ * - 치매 어르신의 일일 설문 응답을 Map 형태로 저장
+ * - 사용자(User)와 다대일 관계 설정
+ * - 생성/수정 시각 자동 관리
+ */
 @Entity
-@Table(name = "\"Record\"")
+@Table(name = "\"Record\"")  // 기존 테이블명 Record를 그대로 사용
 public class DailyRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "record_id")  
+    private Long id;  // PK: 레코드 고유 ID
 
-    private String userId;                     // ← 추가
-    private LocalDate recordDate;              // ← 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;  
+    // FK: User 엔티티와 다대일 관계
+    // user.getUserId() 컬럼에 매핑
+
+    @Column(name = "record_date", nullable = false)
+    private LocalDate recordDate;
+    // 설문 기록 날짜
+
+    // 식사 관련 응답 저장용 테이블 및 컬럼 매핑
+    @ElementCollection
+    @CollectionTable(
+        name = "record_meal_answers",            // Map을 저장할 별도 테이블명
+        joinColumns = @JoinColumn(name = "record_id")  // 조인할 컬럼
+    )
+    @MapKeyColumn(name = "question_key")  // Map의 key를 저장할 컬럼명
+    @Column(name = "answer_value")        // Map의 value를 저장할 컬럼명
+    private Map<String, Integer> mealAnswers;  
 
     @ElementCollection
-    private Map<String, Integer> mealAnswers;       // ← Map으로 변경
-    @ElementCollection
-    private Map<String, Integer> medicationAnswers; // ← Map으로 변경
-    @ElementCollection
-    private Map<String, Integer> activityAnswers;   // ← Map으로 변경
-    @ElementCollection
-    private Map<String, Integer> emotionAnswers;    // ← Map으로 변경
-    @ElementCollection
-    private Map<String, Integer> specialAnswers;    // ← Map으로 변경
+    @CollectionTable(
+        name = "record_medication_answers",
+        joinColumns = @JoinColumn(name = "record_id")
+    )
+    @MapKeyColumn(name = "question_key")
+    @Column(name = "answer_value")
+    private Map<String, Integer> medicationAnswers;  
+    // 복약 관련 응답
 
-    // 기본 생성자
+    @ElementCollection
+    @CollectionTable(
+        name = "record_activity_answers",
+        joinColumns = @JoinColumn(name = "record_id")
+    )
+    @MapKeyColumn(name = "question_key")
+    @Column(name = "answer_value")
+    private Map<String, Integer> activityAnswers;  
+    // 활동 관련 응답
+
+    @ElementCollection
+    @CollectionTable(
+        name = "record_emotion_answers",
+        joinColumns = @JoinColumn(name = "record_id")
+    )
+    @MapKeyColumn(name = "question_key")
+    @Column(name = "answer_value")
+    private Map<String, Integer> emotionAnswers;  
+    // 감정 관련 응답
+
+    @ElementCollection
+    @CollectionTable(
+        name = "record_special_answers",
+        joinColumns = @JoinColumn(name = "record_id")
+    )
+    @MapKeyColumn(name = "question_key")
+    @Column(name = "answer_value")
+    private Map<String, Integer> specialAnswers;  
+    // 특이사항 관련 응답
+
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;  
+    // 레코드 생성 시각, 최초 값만 설정
+
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;  
+    // 레코드 최종 수정 시각
+
+    // 기본 생성자 (JPA 필수)
     public DailyRecord() {}
 
-    // 생성자
-    public DailyRecord(String userId, LocalDate recordDate,
+    // 편의 생성자
+    public DailyRecord(User user,
+                       LocalDate recordDate,
                        Map<String, Integer> mealAnswers,
                        Map<String, Integer> medicationAnswers,
                        Map<String, Integer> activityAnswers,
                        Map<String, Integer> emotionAnswers,
                        Map<String, Integer> specialAnswers) {
-        this.userId = userId;
+        this.user = user;
         this.recordDate = recordDate;
         this.mealAnswers = mealAnswers;
         this.medicationAnswers = medicationAnswers;
@@ -50,11 +108,26 @@ public class DailyRecord {
         this.specialAnswers = specialAnswers;
     }
 
+    // 생성 전 호출: 생성 시각·수정 시각 동시 설정
+    @PrePersist
+    protected void onCreate() {
+        createdAt = OffsetDateTime.now();
+        updatedAt = createdAt;
+    }
+
+    // 수정 전 호출: 수정 시각만 갱신
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = OffsetDateTime.now();
+    }
+
     // Getter/Setter
     public Long getId() { return id; }
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
-    public LocalDate getRecordDate() { return recordDate; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+
+    public LocalDate getRecordDate() { return this.recordDate; }
     public void setRecordDate(LocalDate recordDate) { this.recordDate = recordDate; }
 
     public Map<String, Integer> getMealAnswers() { return mealAnswers; }
@@ -71,4 +144,9 @@ public class DailyRecord {
 
     public Map<String, Integer> getSpecialAnswers() { return specialAnswers; }
     public void setSpecialAnswers(Map<String, Integer> specialAnswers) { this.specialAnswers = specialAnswers; }
+
+    public OffsetDateTime getCreatedAt() { return createdAt; }
+
+    public OffsetDateTime getUpdatedAt() { return updatedAt; }
+
 }
