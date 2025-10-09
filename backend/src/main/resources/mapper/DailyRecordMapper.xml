@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lx.project.dementia_care.mapper.DailyRecordMapper">
+
+  <select id="findByUserIdAndDate" resultType="lx.project.dementia_care.entity.DailyRecord">
+    SELECT
+      record_id      AS recordId,
+      user_id        AS userId,
+      record_date    AS recordDate,
+      content,
+      created_at     AS createdAt,
+      updated_at     AS updatedAt
+    FROM record
+    WHERE user_id = #{userId}
+      AND record_date = #{recordDate}
+  </select>
+
+  <select id="findById" resultType="lx.project.dementia_care.entity.DailyRecord">
+    SELECT
+      record_id      AS recordId,
+      user_id        AS userId,
+      record_date    AS recordDate,
+      content,
+      created_at     AS createdAt,
+      updated_at     AS updatedAt
+    FROM record
+    WHERE record_id = #{recordId}
+  </select>
+
+  <insert id="save" useGeneratedKeys="true" keyProperty="recordId">
+    INSERT INTO record (user_id, record_date, content, created_at, updated_at)
+    VALUES (#{userId}, #{recordDate}, #{content}::jsonb, NOW(), NOW())
+  </insert>
+
+  <update id="update">
+    UPDATE record
+    SET content    = #{content}::jsonb,
+        updated_at = NOW()
+    WHERE record_id = #{recordId}
+  </update>
+
+  <delete id="deleteById">
+    DELETE FROM record WHERE record_id = #{recordId}
+  </delete>
+
+</mapper>

@@ -8,10 +8,15 @@ import java.util.Map;
 public class DailyRecordResponse {
     private Long id;
     private String userId;
-    private LocalDate recordDate;               // ← LocalDate
+    private LocalDate recordDate;    
+    private String content;              
     private Map<String,Integer> mealAnswers;
     private Map<String,Integer> medicationAnswers;
     private Map<String,Integer> activityAnswers;
     private Map<String,Integer> emotionAnswers;
     private Map<String,Integer> specialAnswers;
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

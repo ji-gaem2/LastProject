@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * 기간 엔티티 (Period)
  */
 @Entity
-@Table(name = "period")  // 소문자, 별도의 따옴표 없이 지정
+@Table(name = "period") 
 public class Period {
 
     @Id

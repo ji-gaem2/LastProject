@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 /**
- * 일별 기록을 다루는 REST 컨트롤러
+ * 일별 기록
  */
 @RestController
 @RequestMapping("/api/record")

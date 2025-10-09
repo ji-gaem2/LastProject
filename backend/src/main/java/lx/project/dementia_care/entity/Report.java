@@ -18,8 +18,6 @@ import java.util.Map;
 
 /**
  * 리포트 엔티티 (Report)
- * - 분석된 DailyRecord 요약을 저장
- * - Period, User(patient)와 다대일 관계 매핑
  */
 @Entity
 @Table(name = "report")
@@ -71,11 +69,11 @@ public class Report {
     /**
      * 편의 생성자
      *
-     * @param period   분석 대상 기간 엔티티
-     * @param patient  분석 대상 환자 엔티티
-     * @param content  원본 기록 텍스트
-     * @param summary  분석 결과 요약
-     * @param metrics  분석 메트릭 데이터
+     * @param period   기간
+     * @param patient  분석 대상
+     * @param content  원본 기록
+     * @param summary  요약
+     * @param metrics  메트릭(분석)
      */
     public Report(Period period,
                   User patient,

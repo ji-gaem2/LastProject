@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lx.project.dementia_care.mapper.UserMapper">
+
+  <select id="findById" resultType="lx.project.dementia_care.entity.User">
+    SELECT user_id, id AS login_id, name, pw_hash, birth_date,
+           phone_number, invite_code, subscription, status,
+           profile_photo, role_no, created_at, updated_at
+    FROM "user"
+    WHERE user_id = #{userId}
+  </select>
+
+  <insert id="save" useGeneratedKeys="true" keyProperty="userId">
+    INSERT INTO "user" (id, pw_hash, name, birth_date, phone_number,
+                       invite_code, subscription, status, profile_photo,
+                       role_no, created_at, updated_at)
+    VALUES (#{id}, #{pwHash}, #{name}, #{birthDate}, #{phoneNumber},
+            #{inviteCode}, #{subscription}, #{status}, #{profilePhoto},
+            #{roleNo}, NOW(), NOW())
+  </insert>
+
+  <update id="update">
+    UPDATE "user"
+    SET id = #{id},
+        pw_hash = #{pwHash},
+        name = #{name},
+        birth_date = #{birthDate},
+        phone_number = #{phoneNumber},
+        invite_code = #{inviteCode},
+        subscription = #{subscription},
+        status = #{status},
+        profile_photo = #{profilePhoto},
+        role_no = #{roleNo},
+        updated_at = NOW()
+    WHERE user_id = #{userId}
+  </update>
+
+  <delete id="deleteById">
+    DELETE FROM "user" WHERE user_id = #{userId}
+  </delete>
+
+</mapper>

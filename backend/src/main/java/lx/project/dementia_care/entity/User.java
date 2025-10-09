@@ -6,11 +6,9 @@ import java.util.List;
 
 /**
  * 사용자 엔티티 (User)
- * - 치매 어르신 또는 보호자 정보를 담습니다.
- * - DailyRecord와 1:N 연관관계 설정합니다.
  */
 @Entity
-@Table(name = "user")  // 실제 DB 테이블명이 User이므로 큰따옴표 처리
+@Table(name = "user")  
 public class User {
 
     @Id

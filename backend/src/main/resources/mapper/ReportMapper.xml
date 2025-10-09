@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lx.project.dementia_care.mapper.ReportMapper">
+
+  <insert id="save">
+    INSERT INTO report
+      (period_id, patient_id, content, summary, metrics, created_at, updated_at)
+    VALUES
+      (
+        #{report.periodId},
+        #{report.patientId},
+        #{report.content}::text,
+        #{report.summary}::text,
+        #{report.metrics}::jsonb,
+        NOW(),
+        NOW()
+      )
+  </insert>
+
+</mapper>
