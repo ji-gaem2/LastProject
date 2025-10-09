@@ -14,7 +14,7 @@ import java.time.LocalDate;
  * 일별 기록을 다루는 REST 컨트롤러
  */
 @RestController
-@RequestMapping("/api/daily-records")
+@RequestMapping("/api/record")
 public class DailyRecordController {
 
     private final DailyRecordService service;

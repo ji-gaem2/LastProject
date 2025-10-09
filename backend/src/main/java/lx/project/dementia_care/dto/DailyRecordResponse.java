@@ -1,4 +1,3 @@
-// src/main/java/lx/project/dementia_care/dto/DailyRecordResponse.java
 package lx.project.dementia_care.dto;
 
 import lombok.Data;

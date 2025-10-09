@@ -114,6 +114,8 @@ import HappyMarker from '@/components/HappyMarker.vue'
 import AlertMarker from '@/components/AlertMarker.vue' //
 import axios from 'axios'
 
+const userName = ref('홍길동')
+
 const currentDate = ref('')
 let intervalId = null
 
@@ -150,7 +152,7 @@ const selectedAnswers = ref({
 const API_BASE_URL = 'http://localhost:8080/api'
 
 // 사용자 ID (실제로는 로그인 정보에서 가져와야 함)
-const userName = ref('홍길동')  // 임시로 고정값 사용
+const userId = ref('1')  // 임시로 고정값 사용
 
 // 제출하기 함수 구현
 async function handleSubmit() {
@@ -163,12 +165,12 @@ async function handleSubmit() {
 
         // 2. 서버로 전송할 데이터 구성
         const requestData = {
-            userId: userName.value,
-            recordDate: getCurrentDate(), // YYYY-MM-DD 형식
+            userId: userId.value,               // 숫자 ID 사용
+            recordDate: getCurrentDate(),       // YYYY-MM-DD 형식
             mealAnswers: selectedAnswers.value.meal,
-            medicationAnswers: selectedAnswers.value.medi,  // 주의: 프론트는 medi, 백엔드는 medication
+            medicationAnswers: selectedAnswers.value.medi,  // 프론트는 medi, 백엔드는 medication
             activityAnswers: selectedAnswers.value.activity,
-            emotionAnswers: selectedAnswers.value.feel,     // 주의: 프론트는 feel, 백엔드는 emotion
+            emotionAnswers: selectedAnswers.value.feel,     // 프론트는 feel, 백엔드는 emotion
             specialAnswers: selectedAnswers.value.special
         }
 
@@ -181,7 +183,7 @@ async function handleSubmit() {
         submitButton.disabled = true
 
         // 4. API 호출
-        const response = await axios.post(`${API_BASE_URL}/daily-records`, requestData, {
+        const response = await axios.post(`${API_BASE_URL}/record`, requestData, {
             headers: {
                 'Content-Type': 'application/json'
             }

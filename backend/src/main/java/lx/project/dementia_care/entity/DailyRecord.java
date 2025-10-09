@@ -12,7 +12,7 @@ import jakarta.persistence.*;
  * - 생성/수정 시각 자동 관리
  */
 @Entity
-@Table(name = "\"Record\"")  // 기존 테이블명 Record를 그대로 사용
+@Table(name = "record")  // 기존 테이블명 Record를 그대로 사용
 public class DailyRecord {
 
     @Id
@@ -88,6 +88,13 @@ public class DailyRecord {
     private OffsetDateTime updatedAt;  
     // 레코드 최종 수정 시각
 
+    @Column(name = "content", columnDefinition = "TEXT")
+    private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "period_id", nullable = false)
+    private Period period;
+
     // 기본 생성자 (JPA 필수)
     public DailyRecord() {}
 
@@ -148,5 +155,12 @@ public class DailyRecord {
     public OffsetDateTime getCreatedAt() { return createdAt; }
 
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
+
+    // Lombok 또는 수동 게터/세터
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
+
+    public Period getPeriod() { return period; }
+    public void setPeriod(Period period) { this.period = period; }
 
 }

@@ -5,36 +5,29 @@ import java.time.LocalDate;
 
 /**
  * 기간 엔티티 (Period)
- * - 특정 기간(시작/종료일) 정보를 저장
  */
 @Entity
-@Table(name = "\"Period\"", schema = "public")  // DB 테이블명이 Period
+@Table(name = "period")  // 소문자, 별도의 따옴표 없이 지정
 public class Period {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "period_id")
-    private Long periodId;  
-    // PK: 기간 고유 ID
+    private Long periodId;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;  
-    // 시작 날짜
+    private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;  
-    // 종료 날짜
+    private LocalDate endDate;
 
-    // 기본 생성자 (JPA 요구)
     public Period() {}
 
-    // 편의 생성자
     public Period(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    // Getter/Setter
     public Long getPeriodId() {
         return periodId;
     }

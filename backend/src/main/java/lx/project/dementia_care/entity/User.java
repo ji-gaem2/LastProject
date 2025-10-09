@@ -10,13 +10,13 @@ import java.util.List;
  * - DailyRecord와 1:N 연관관계 설정합니다.
  */
 @Entity
-@Table(name = "\"User\"")  // 실제 DB 테이블명이 User이므로 큰따옴표 처리
+@Table(name = "user")  // 실제 DB 테이블명이 User이므로 큰따옴표 처리
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userId;  
+    private Long userId;
+
     // PK: 사용자 고유 ID
 
     @Column(nullable = false, length = 100)

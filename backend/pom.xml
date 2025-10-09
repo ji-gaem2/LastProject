@@ -11,7 +11,10 @@
 	<groupId>lx.project</groupId>
 	<artifactId>dementia-care</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
+	<modules>
+		<module>backend</module>	
+	</modules>
 	<name>dementia-care</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -97,6 +100,25 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Hibernate Core -->
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>6.4.0.Final</version>
+		</dependency>
+
+		<!-- Hibernate Types (JsonBinaryType 제공) -->
+		<dependency>
+			<groupId>com.vladmihalcea</groupId>
+			<artifactId>hibernate-types-52</artifactId>
+			<version>2.19.0</version>
 		</dependency>
 	</dependencies>
 
